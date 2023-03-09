@@ -31,7 +31,7 @@ etcdctl get foo returns bar.
 
 
 ## OS
-
+Debian 11
 
 
 ## 回答
