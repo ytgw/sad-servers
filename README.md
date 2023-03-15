@@ -3,6 +3,30 @@ Troubleshoot and make a sad server happy!
 
 [SadServers - Troubleshooting Linux Servers](https://sadservers.com/)の回答を記載するリポジトリ。
 
+
+## シナリオ一覧
+
+1. ["Saint John": what is writing to this log file?](SaintJohn_what-is-writing-to-this-log-file.md)
+1. ["Saskatoon": counting IPs.](Saskatoon_counting-ips.md)
+1. ["Santiago": Find the secret combination](Santiago_find-the-secret-combination.md)
+1. ["Manhattan": can't write data into database.](Manhattan_cant-write-data-into-database)
+1. ["Tokyo": can't serve web file](Tokyo_cant-serve-web-file.md)
+1. ["Cape Town": Borked Nginx](CapeTown_borked-nginx.md)
+1. ["Salta": Docker container won't start.](Salta_docker-container-wont-start.md)
+1. ["Venice": Am I in a container?](Venice_am-i-in-a-container.md)
+1. ["Oaxaca": Close an Open File](Oaxaca_close-an-open-file.md)
+1. ["Melbourne": WSGI with Gunicorn](Melbourne_wsgi-with-gunicorn.md)
+1. ["Lisbon": etcd SSL cert troubles](Lisbon_etcd-ssl-cert-troubles.md)
+1. ["Jakarta": it's always DNS.](Jakarta_its-always-dns.md)
+1. "Bern": Docker web container can't connect to db container.
+1. "Karakorum": WTFIT – What The Fun Is This?
+1. "Singara": Docker and Kubernetes web app not working.
+1. "Hong-Kong": can't write data into database.
+1. "Pokhara": SSH and other sshenanigans
+1. "Roseau": Hack a Web Server
+1. "Belo-Horizonte": A Java Enigma
+
+
 ## General Instructions
 You have full (root) access to a real Linux server (an ephemeral Virtual Machine) via an SSH session.
 Do whatever is necessary to fix the problem described so that a test passes within the alloted time.
@@ -16,6 +40,7 @@ If you are stuck or not sure what to do, you can click on the "Next Clue / Solut
 Close the clue window and click "Next Clue / Solution" again to get a new clue.
 
 Once you think you have fixed the issue, click on the "Check My Solution" button to verify it as per the given Test.
+
 
 ## General Instructions(機械翻訳)
 あなたは、実際の Linux サーバー（一時的な仮想マシン）に SSH セッションでフルアクセス（root）することができます。
