@@ -18,8 +18,8 @@ Troubleshoot and make a sad server happy!
 1. ["Melbourne": WSGI with Gunicorn](Melbourne_wsgi-with-gunicorn.md)
 1. ["Lisbon": etcd SSL cert troubles](Lisbon_etcd-ssl-cert-troubles.md)
 1. ["Jakarta": it's always DNS.](Jakarta_its-always-dns.md)
-1. "Bern": Docker web container can't connect to db container.
-1. "Karakorum": WTFIT – What The Fun Is This?
+1. ["Bern": Docker web container can't connect to db container.](Bern_docker-web-container-cant-connect-to-db-container.md)
+1. ["Karakorum": WTFIT – What The Fun Is This?](Karakorum_wtfit–what-the-fun-is-this.md)
 1. "Singara": Docker and Kubernetes web app not working.
 1. "Hong-Kong": can't write data into database.
 1. "Pokhara": SSH and other sshenanigans
