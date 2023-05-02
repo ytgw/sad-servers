@@ -49,9 +49,6 @@ Should return:INSERT 0 1
 
 ## OS
 Debian 10
-```bash
-
-```
 
 
 ## 回答
