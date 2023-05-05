@@ -24,7 +24,7 @@ Troubleshoot and make a sad server happy!
 1. ["Singara": Docker and Kubernetes web app not working.](Singara_docker-and-kubernetes-web-app-not-working.md)
 1. ["Hong-Kong": can't write data into database.](Hong-Kong_cant-write-data-into-database.md)
 1. ["Pokhara": SSH and other sshenanigans](Pokhara_ssh-and-other-sshenanigans.md)
-1. "Roseau": Hack a Web Server
+1. ["Roseau": Hack a Web Server](Roseau_hack-a-web-server.md)
 1. "Belo-Horizonte": A Java Enigma
 
 
