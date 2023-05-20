@@ -9,6 +9,14 @@
 Easy
 
 
+## Type
+Do
+
+
+## Access
+Public
+
+
 ## Description
 Alice the spy has hidden a secret number combination, find it using these instructions:
 
@@ -29,6 +37,7 @@ Write both numbers consecutively as one (no new line or spaces) to the solution 
 2つの数字を1つの数字として連続的に(改行や空白を入れずに)解答ファイルに書きます。
 例えば1番目の数字が11で2番目の数字が22なら、```echo -n 11 > /home/admin/solution; echo 22 >> /home/admin/solution```とします。
 
+
 ## Test
 Running md5sum /home/admin/solution returns d80e026d18a57b56bddf1d99a8a491f9(just a way to verify the solution without giving it away.)
 
@@ -43,7 +52,7 @@ Debian 11
 
 ## 回答
 
-```
+```bash
 # Aliceを含むテキストファイルを見つける
 grep 'Alice' --count /home/admin/*.txt
 # 期待出力
@@ -53,6 +62,7 @@ grep 'Alice' --count /home/admin/*.txt
 # /home/admin/84-0.txt:0
 
 # 合計行数のカウント
+# 4ファイルなので自分で計算したほうが速い
 # https://qiita.com/tofu511/items/3ecf9c5361d08b5c6eae
 grep 'Alice' --count --no-filename /home/admin/*.txt | awk 'BEGIN { sum = 0 } { sum += $0 } END { print sum }'
 # 期待出力
@@ -66,5 +76,7 @@ less /home/admin/1342-0.txt
 # 回答ファイルに出力
 echo -n 411 > /home/admin/solution
 echo 156 >> /home/admin/solution
+
+# 回答を確認
 md5sum /home/admin/solution
 ```
