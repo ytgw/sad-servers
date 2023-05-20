@@ -9,6 +9,14 @@
 Easy
 
 
+## Type
+Do
+
+
+## Access
+Public
+
+
 ## Description
 There's a web server access log file at /home/admin/access.log.
 The file consists of one line per HTTP request, with the requester's IP address at the beginning of each line.
@@ -41,33 +49,44 @@ Debian 11
 
 ## 回答
 
+```tail /home/admin/access.log```でログファイルを確認する。
+出力結果は下記の通り。
 ```
-less /home/admin/access.log
-# 出力例
-# 83.149.9.216 - - [17/May/2015:10:05:03 +0000] "GET /presentations/logstash-monitorama-2013/images/kibana-search.png HTTP/1.1" 200 203023 "http://semicomplete.com/presentations/logstash-monitorama-2013/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1700.77 Safari/537.36"
-# 83.149.9.216 - - [17/May/2015:10:05:43 +0000] "GET /presentations/logstash-monitorama-2013/images/kibana-dashboard3.png HTTP/1.1" 200 171717 "http://semicomplete.com/presentations/logstash-monitorama-2013/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1700.77 Safari/537.36"
-# 83.149.9.216 - - [17/May/2015:10:05:47 +0000] "GET /presentations/logstash-monitorama-2013/plugin/highlight/highlight.js HTTP/1.1" 200 26185 "http://semicomplete.com/presentations/logstash-monitorama-2013/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1700.77 Safari/537.36"
-# 83.149.9.216 - - [17/May/2015:10:05:12 +0000] "GET /presentations/logstash-monitorama-2013/plugin/zoom-js/zoom.js HTTP/1.1" 200 7697 "http://semicomplete.com/presentations/logstash-monitorama-2013/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1700.77 Safari/537.36"
+66.249.73.135 - - [20/May/2015:21:05:11 +0000] "GET /blog/tags/xsendevent HTTP/1.1" 200 10049 "-" "Mozilla/5.0 (iPhone; CPU iPhone OS 6_0 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/6.0 Mobile/10A5376e Safari/8536.25 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)"
+198.46.149.143 - - [20/May/2015:21:05:29 +0000] "GET /blog/geekery/disabling-battery-in-ubuntu-vms.html?utm_source=feedburner&utm_medium=feed&utm_campaign=Feed%3A+semicomplete%2Fmain+%28semicomplete.com+-+Jordan+Sissel%29 HTTP/1.1" 200 9316 "-" "Tiny Tiny RSS/1.11 (http://tt-rss.org/)"
+198.46.149.143 - - [20/May/2015:21:05:34 +0000] "GET /blog/geekery/solving-good-or-bad-problems.html?utm_source=feedburner&utm_medium=feed&utm_campaign=Feed%3A+semicomplete%2Fmain+%28semicomplete.com+-+Jordan+Sissel%29 HTTP/1.1" 200 10756 "-" "Tiny Tiny RSS/1.11 (http://tt-rss.org/)"
+82.165.139.53 - - [20/May/2015:21:05:15 +0000] "GET /projects/xdotool/ HTTP/1.0" 200 12292 "-" "-"
+100.43.83.137 - - [20/May/2015:21:05:01 +0000] "GET /blog/tags/standards HTTP/1.1" 200 13358 "-" "Mozilla/5.0 (compatible; YandexBot/3.0; +http://yandex.com/bots)"
+63.140.98.80 - - [20/May/2015:21:05:28 +0000] "GET /blog/tags/puppet?flav=rss20 HTTP/1.1" 200 14872 "http://www.semicomplete.com/blog/tags/puppet?flav=rss20" "Tiny Tiny RSS/1.11 (http://tt-rss.org/)"
+63.140.98.80 - - [20/May/2015:21:05:50 +0000] "GET /blog/geekery/solving-good-or-bad-problems.html?utm_source=feedburner&utm_medium=feed&utm_campaign=Feed%3A+semicomplete%2Fmain+%28semicomplete.com+-+Jordan+Sissel%29 HTTP/1.1" 200 10756 "-" "Tiny Tiny RSS/1.11 (http://tt-rss.org/)"
+66.249.73.135 - - [20/May/2015:21:05:00 +0000] "GET /?flav=atom HTTP/1.1" 200 32352 "-" "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)"
+180.76.6.56 - - [20/May/2015:21:05:56 +0000] "GET /robots.txt HTTP/1.1" 200 - "-" "Mozilla/5.0 (Windows NT 5.1; rv:6.0.2) Gecko/20100101 Firefox/6.0.2"
+46.105.14.53 - - [20/May/2015:21:05:15 +0000] "GET /blog/tags/puppet?flav=rss20 HTTP/1.1" 200 14872 "-" "UniversalFeedParser/4.2-pre-314-svn +http://feedparser.org/"
+```
 
+```bash
 # スペースで区切って1列目(IPアドレス)を表示する
 cut --fields=1 --delimiter=' ' /home/admin/access.log
-# 出力例
+# 下記は出力結果抜粋
 # 66.249.73.135
 # 180.76.6.56
 # 46.105.14.53
 
 # uniqで重複行をカウントするが、その前処理にソートしないと連続していない重複行を同一のものと扱ってくれない
 cut --fields=1 --delimiter=' ' /home/admin/access.log | sort | uniq --count
-# 出力例
+# 下記は出力結果抜粋
 #      26 99.252.100.83
 #       9 99.33.244.41
 #       6 99.6.61.4
 
 # カウント結果をソート
 cut --fields=1 --delimiter=' ' /home/admin/access.log | sort | uniq --count | sort
-# 出力例
+# 下記は出力結果抜粋
 #     273 75.97.9.59
 #     357 130.237.218.86
 #     364 46.105.14.53
 #     482 66.249.73.135
+
+# 結果の書き込み
+echo "66.249.73.135" > /home/admin/highestip.txt
 ```
