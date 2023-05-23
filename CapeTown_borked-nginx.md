@@ -9,6 +9,13 @@
 Medium
 
 
+## Type
+Fix
+
+## Access
+Public
+
+
 ## Description
 There's an Nginx web server installed and managed by systemd.
 Running curl -I 127.0.0.1:80 returns curl: (7) Failed to connect to localhost port 80: Connection refused , fix it so when you curl you get the default Nginx page.
@@ -35,22 +42,20 @@ Debian 11
 ## 回答
 ### 設定ファイルの修正
 
-```
+```bash
 # Nginxに接続できるか確認 → 接続できない
 curl -I 127.0.0.1:80
 
 # ファイアウォールに問題ないか確認 → 問題ない
 sudo iptables -L
+
+# 接続ポートをリッスンしているポートがあるか確認 → ない
+netstat -pan -A inet,inet6 | grep -i listen
 ```
 
 
-```
-# サービスが起動しているか確認 → 起動していない
-# 「unexpected ";" in /etc/nginx/sites-enabled/default:1」のエラーあり
-systemctl status nginx.service
-```
-
-以下が期待出力。
+```systemctl status nginx.service```を実行してサービスが起動しているか確認する。
+出力結果は下記の通りで、「unexpected ";" in /etc/nginx/sites-enabled/default:1」のエラーが発生し、起動に失敗している。
 ```
 ● nginx.service - The NGINX HTTP and reverse proxy server
      Loaded: loaded (/etc/systemd/system/nginx.service; enabled; vendor preset: enabled)
@@ -67,17 +72,17 @@ Nov 28 14:05:51 ip-172-31-37-146 systemd[1]: Failed to start The NGINX HTTP and 
 ```
 
 
-```
+```bash
 # エラーの設定ファイルを修正
 # /etc/nginx/sites-enabled/defaultの1行目の;をコメントアウト
 sudo nano /etc/nginx/sites-enabled/default
 
 # サービスの起動
 sudo systemctl start nginx.service
-systemctl status nginx.service
 ```
 
-以下が期待出力。
+再度```systemctl status nginx.service```を実行してサービスが起動しているか確認する。
+出力結果は下記の通りで、起動に成功した。
 ```
 ● nginx.service - The NGINX HTTP and reverse proxy server
      Loaded: loaded (/etc/systemd/system/nginx.service; enabled; vendor preset: enabled)
@@ -98,13 +103,8 @@ Nov 29 15:03:18 ip-172-31-33-150 nginx[826]: nginx: configuration file /etc/ngin
 Nov 29 15:03:18 ip-172-31-33-150 systemd[1]: Started The NGINX HTTP and reverse proxy server.
 ```
 
-
-```
-# Nginxに接続できるか確認 → 接続できない
-curl -I 127.0.0.1:80
-```
-
-以下が期待出力。
+```curl -I 127.0.0.1:80```を実行し、Nginxに接続できるか確認する。
+出力結果は下記の通りで、接続はできるが、500エラーになっている。
 ```
 HTTP/1.1 500 Internal Server Error
 Server: nginx/1.18.0
@@ -117,12 +117,8 @@ Connection: close
 
 ### Too many open filesエラーの修正
 
-```
-# Nginxのログを確認 → 「Too many open files」のエラーあり
-tail /var/log/nginx/error.log
-```
-
-以下が期待出力。
+```tail /var/log/nginx/error.log```でNginxのログを確認する。
+出力結果は下記の通りで、「Too many open files」のエラーが発生している。
 ```
 2022/09/11 16:39:11 [emerg] 5875#5875: unexpected ";" in /etc/nginx/sites-enabled/default:1
 2022/09/11 16:54:26 [emerg] 5931#5931: unexpected ";" in /etc/nginx/sites-enabled/default:1
@@ -137,18 +133,18 @@ tail /var/log/nginx/error.log
 ```
 
 
-```
+```bash
 # 該当のPIDを調べる
 ps ax | grep nginx | grep worker
 # 期待出力
-    825 ?        S      0:00 nginx: worker process
+#     825 ?        S      0:00 nginx: worker process
 
 # エラーの詳細確認 → 該当プロセスのMax open filesが10になっている
 cat /proc/825/limits
 ```
 
 
-以下が期待出力。
+```cat /proc/825/limits```の出力結果は下記の通り。
 ```
 Limit                     Soft Limit           Hard Limit           Units
 Max cpu time              unlimited            unlimited            seconds
@@ -170,7 +166,7 @@ Max realtime timeout      unlimited            unlimited            us
 ```
 
 
-```
+```bash
 # Nginxの該当設定の確認 → 設定されていない
 grep -rl 'worker_rlimit_nofile' /etc/nginx/
 
@@ -179,7 +175,7 @@ grep -rl 'worker_rlimit_nofile' /etc/nginx/
 cat /etc/systemd/system/nginx.service
 ```
 
-以下が期待出力。
+```cat /etc/systemd/system/nginx.service```の出力結果は下記の通り。
 ```
 [Unit]
 Description=The NGINX HTTP and reverse proxy server
@@ -201,7 +197,7 @@ WantedBy=multi-user.target
 ```
 
 
-```
+```bash
 # 設定変更(LimitNOFILE=10をコメントアウト)し再起動
 sudo nano /etc/systemd/system/nginx.service
 sudo systemctl daemon-reload
@@ -210,6 +206,6 @@ sudo systemctl restart nginx.service
 
 # Nginxに接続できるか確認 → 接続できる
 curl -Is 127.0.0.1:80|head -1
-# 期待出力
+# 出力結果
 # HTTP/1.1 200 OK
 ```
