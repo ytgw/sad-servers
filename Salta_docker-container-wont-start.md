@@ -9,6 +9,14 @@
 Medium
 
 
+## Type
+Fix
+
+
+## Access
+Public
+
+
 ## Description
 There's a "dockerized" Node.js web application in the /home/admin/app directory.
 Create a Docker container so you get a web app on port :8888 and can curl to it.
@@ -36,64 +44,108 @@ Debian 11
 ## 回答
 
 ### 8888ポートを使っている別プロセスの停止
-```
-curl localhost:8888  # these are not the droids you're looking for
+```bash
+# 接続確認
+curl localhost:8888
+# 出力結果は下記の通りで、別のプロセスが該当ポートを利用している
+# these are not the droids you're looking for
 
-sudo lsof -i:8888  # sudo: lsof: command not found
-sudo netstat -apn | grep 8888
-# 出力例
-# tcp        0      0 0.0.0.0:8888            0.0.0.0:*               LISTEN      600/nginx: master p
-# tcp        0      0 127.0.0.1:33752         127.0.0.1:8888          TIME_WAIT   -
-# tcp6       0      0 :::8888                 :::*                    LISTEN      600/nginx: master p
+# 該当ポートを使用しているプロセスの特定
+sudo netstat -pan -A inet,inet6 | grep 8888
+# 出力結果は下記の通りで、nginxがポートを使用している
+# tcp        0      0 0.0.0.0:8888            0.0.0.0:*               LISTEN      618/nginx: master p
+# tcp        0      0 127.0.0.1:58362         127.0.0.1:8888          TIME_WAIT   -
+# tcp6       0      0 :::8888                 :::*                    LISTEN      618/nginx: master p
 
-sudo kill 600
-sudo netstat -apn | grep 8888
-# 出力例
-# tcp        0      0 127.0.0.1:33752         127.0.0.1:8888          TIME_WAIT   -
+# nginxがsystemdで管理されているか確認
+systemctl status nginx.service
+# 出力結果は省略するが、状態はActiveでプロセスIDもnetstatで調べたものと一致した
+
+# nginxの停止
+sudo systemctl stop nginx.service
+
+# 停止されたか確認
+sudo netstat -pan -A inet,inet6 | grep 8888
+# 出力なし
 ```
 
-### Dockerのtypo修正
-```
+### Dockerfileのtypo修正
+```bash
+# コンテナの起動状態を確認
 sudo docker ps -a
-# 出力例
+# 出力結果は下記の通りで起動中のものはない。
 # CONTAINER ID   IMAGE     COMMAND                  CREATED        STATUS                    PORTS     NAMES
 # 124a4fb17a1c   app       "docker-entrypoint.s…"   3 months ago   Exited (1) 3 months ago             elated_taussig
 
-sudo docker logs elated_taussig  # Error: Cannot find module '/usr/src/app/serve.js'
-sudo docker rm elated_taussig
-sudo docker image ls
-# 出力例
-# REPOSITORY   TAG           IMAGE ID       CREATED         SIZE
-# app          latest        1d782b86d6f2   3 months ago    124MB
-# node         15.7-alpine   706d12284dd5   22 months ago   110MB
-
+# イメージのビルド
 cd /home/admin/app/
-ls
-cat Dockerfile
-
-# Dockerfileの修正
-# serve.js -> server.js
-nano Dockerfile
-
-sudo docker build -t app .
-sudo docker run --rm --name app -p 8888:8880 -d app
-curl localhost:8888  # curl: (56) Recv failure: Connection reset by peer
-sudo docker logs app # Server Started on: 8888
-sudo docker kill app
+sudo docker build -t sad .
+# 出力結果は省略するがエラーなくビルドできた
 ```
 
+コンテナの起動のため、```sudo docker run --rm -p 8888:8880 sad```を実行した。
+なお、ポート番号はDockerfileのEXPOSEを参考に8880にしている。
+出力結果は下記の通りで、エラーが発生している。
+```
+node:internal/modules/cjs/loader:928
+  throw err;
+  ^
+
+Error: Cannot find module '/usr/src/app/serve.js'
+    at Function.Module._resolveFilename (node:internal/modules/cjs/loader:925:15)
+    at Function.Module._load (node:internal/modules/cjs/loader:769:27)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:76:12)
+    at node:internal/main/run_main_module:17:47 {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: []
+}
+```
+
+Dockerfileを確認すると```CMD [ "node", "serve.js" ]```という記述があるが、```serve.js```でなく```server.js```のtypoである。
+エディタで修正し再度ビルドし、```sudo docker run --rm -p 8888:8880 sad```でコンテナを起動する。
+```Server Started on: 8888```と出力され、エラーが発生なくなった。
 
 ### Dockerfileのポート修正
+```bash
+# dockerを起動したウィンドウとは別の新しいウィンドウで実施
+
+# 再度接続確認
+curl localhost:8888
+# 出力結果
+# curl: (56) Recv failure: Connection reset by peer
+
+# コンテナの起動状況確認
+sudo docker ps -a
+# 出力結果は下記の通りで特に問題は見つからない。
+# CONTAINER ID   IMAGE     COMMAND                  CREATED          STATUS                    PORTS                                       NAMES
+# d9104e2769c8   sad       "docker-entrypoint.s…"   52 seconds ago   Up 51 seconds             0.0.0.0:8888->8880/tcp, :::8888->8880/tcp   distracted_goldberg
+# 124a4fb17a1c   app       "docker-entrypoint.s…"   8 months ago     Exited (1) 8 months ago                                               elated_taussig
+
+# ポート使用状況の確認
+sudo netstat -pan -A inet,inet6 | grep 8888
+# 出力結果は下記の通りで特に問題は見つからない
+# tcp        0      0 0.0.0.0:8888            0.0.0.0:*               LISTEN      1165/docker-proxy
+# tcp6       0      0 :::8888                 :::*                    LISTEN      1171/docker-proxy
 ```
-cat server.js  # port = process.env.PORT || 8888
+
+アプリケーションスクリプト(/home/admin/app/server.js)を確認すると、```port = process.env.PORT || 8888```という行がある。
+これはDockerfileの```EXPOSE 8880```と食い違っている。
+Dockerfileを```EXPOSE 8880```から```EXPOSE 8888```にエディタで変更する。
+```bash
+# 起動中のコンテナを停止
+sudo docker stop distracted_goldberg
 
 # Dockerfileの修正
 # EXPOSE 8880 -> EXPOSE 8888
 nano Dockerfile
 
-sudo docker build -t app .
-sudo docker run --rm --name app -p 8888:8888 -d app
+# イメージのビルド
+sudo docker build -t sad .
 
-# 結果確認
-curl localhost:8888  # Hello World!
+# コンテナの起動
+sudo docker run --rm -p 8888:8888 sad
+# 出力結果
+# Server Started on: 8888
 ```
+
+接続確認のためdockerを起動したウィンドウとは別の新しいウィンドウで```curl localhost:8888```を実行すると期待通り```Hello World!```と出力された。
