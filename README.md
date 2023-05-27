@@ -6,26 +6,28 @@ Troubleshoot and make a sad server happy!
 
 ## シナリオ一覧
 
-1. ["Saint John": what is writing to this log file?](SaintJohn_what-is-writing-to-this-log-file.md)
-1. ["Saskatoon": counting IPs.](Saskatoon_counting-ips.md)
-1. ["Santiago": Find the secret combination](Santiago_find-the-secret-combination.md)
-1. ["Manhattan": can't write data into database.](Manhattan_cant-write-data-into-database)
-1. ["Tokyo": can't serve web file](Tokyo_cant-serve-web-file.md)
-1. ["Cape Town": Borked Nginx](CapeTown_borked-nginx.md)
-1. ["Salta": Docker container won't start.](Salta_docker-container-wont-start.md)
-1. ["Venice": Am I in a container?](Venice_am-i-in-a-container.md)
-1. ["Oaxaca": Close an Open File](Oaxaca_close-an-open-file.md)
-1. ["Melbourne": WSGI with Gunicorn](Melbourne_wsgi-with-gunicorn.md)
-1. ["Lisbon": etcd SSL cert troubles](Lisbon_etcd-ssl-cert-troubles.md)
-1. "Kihei": Surely Not Another Disk Space Scenario
-1. ["Jakarta": it's always DNS.](Jakarta_its-always-dns.md)
-1. ["Bern": Docker web container can't connect to db container.](Bern_docker-web-container-cant-connect-to-db-container.md)
-1. ["Karakorum": WTFIT – What The Fun Is This?](Karakorum_wtfit–what-the-fun-is-this.md)
-1. ["Singara": Docker and Kubernetes web app not working.](Singara_docker-and-kubernetes-web-app-not-working.md)
-1. ["Hong-Kong": can't write data into database.](Hong-Kong_cant-write-data-into-database.md)
-1. ["Pokhara": SSH and other sshenanigans](Pokhara_ssh-and-other-sshenanigans.md)
-1. ["Roseau": Hack a Web Server](Roseau_hack-a-web-server.md)
-1. "Belo-Horizonte": A Java Enigma
+| # | シナリオ名 | 成功か |
+| :-- | :-- | :-- |
+| 1 | ["Saint John": what is writing to this log file?](SaintJohn_what-is-writing-to-this-log-file.md) | o |
+| 2 | ["Saskatoon": counting IPs.](Saskatoon_counting-ips.md) | o |
+| 3 | ["Santiago": Find the secret combination](Santiago_find-the-secret-combination.md) | o |
+| 4 | ["Manhattan": can't write data into database.](Manhattan_cant-write-data-into-database) | o |
+| 5 | ["Tokyo": can't serve web file](Tokyo_cant-serve-web-file.md) | o |
+| 6 | ["Cape Town": Borked Nginx](CapeTown_borked-nginx.md) | o |
+| 7 | ["Salta": Docker container won't start.](Salta_docker-container-wont-start.md) | o |
+| 8 | ["Venice": Am I in a container?](Venice_am-i-in-a-container.md) | o |
+| 9 | ["Oaxaca": Close an Open File](Oaxaca_close-an-open-file.md) |  |
+| 10 | ["Melbourne": WSGI with Gunicorn](Melbourne_wsgi-with-gunicorn.md) |  |
+| 11 | ["Lisbon": etcd SSL cert troubles](Lisbon_etcd-ssl-cert-troubles.md) |  |
+| 12 | "Kihei": Surely Not Another Disk Space Scenario |  |
+| 13 | ["Jakarta": it's always DNS.](Jakarta_its-always-dns.md) |  |
+| 14 | ["Bern": Docker web container can't connect to db container.](Bern_docker-web-container-cant-connect-to-db-container.md) |  |
+| 15 | ["Karakorum": WTFIT – What The Fun Is This?](Karakorum_wtfit–what-the-fun-is-this.md) |  |
+| 16 | ["Singara": Docker and Kubernetes web app not working.](Singara_docker-and-kubernetes-web-app-not-working.md) |  |
+| 17 | ["Hong-Kong": can't write data into database.](Hong-Kong_cant-write-data-into-database.md) |  |
+| 18 | ["Pokhara": SSH and other sshenanigans](Pokhara_ssh-and-other-sshenanigans.md) |  |
+| 19 | ["Roseau": Hack a Web Server](Roseau_hack-a-web-server.md) |  |
+| 20 | "Belo-Horizonte": A Java Enigma |  |
 
 
 ## General Instructions
