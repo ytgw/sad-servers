@@ -9,6 +9,14 @@
 Medium
 
 
+## Type
+Do
+
+
+## Access
+Public
+
+
 ## Description
 Try and figure out if you are inside a container (like a Docker one for example) or inside a Virtual Machine (like in the other scenarios).
 
@@ -31,7 +39,7 @@ Debian 11
 
 ## 回答
 
-```
+```bash
 ps aux
 # systemd含め、複数プロセスあり
 # 出力結果
